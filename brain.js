@@ -1,8 +1,7 @@
 /* ROOMI Groq AI brain */
 (() => {
   const WORKER_URL =
-    "https://roomi-ai.akakal9213.workers.dev";
-
+    https://roomi-ai.tsukiuta3113.workers.dev";
   function setBrainStatus(text, badgeText) {
     const status =
       document.querySelector("#brainStatus");
