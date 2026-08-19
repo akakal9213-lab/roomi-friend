@@ -19,16 +19,16 @@ const defaults={
 let state;
 try{
   const saved =
-    localStorage.getItem('roomiStateV18') ||
-    localStorage.getItem('roomiStateV17') ||
-    localStorage.getItem('roomiStateV16') ||
-    localStorage.getItem('roomiStateV15') ||
-    localStorage.getItem('roomiStateV14') ||
-    localStorage.getItem('roomiStateV13') ||
-    localStorage.getItem('roomiStateV12') ||
-    localStorage.getItem('roomiStateV11') ||
-    localStorage.getItem('roomiStateV10') ||
-    localStorage.getItem('roomiStateV9');
+    localStorage.getItem('roomiFriendStateV18') ||
+    localStorage.getItem('roomiFriendStateV17') ||
+    localStorage.getItem('roomiFriendStateV16') ||
+    localStorage.getItem('roomiFriendStateV15') ||
+    localStorage.getItem('roomiFriendStateV14') ||
+    localStorage.getItem('roomiFriendStateV13') ||
+    localStorage.getItem('roomiFriendStateV12') ||
+    localStorage.getItem('roomiFriendStateV11') ||
+    localStorage.getItem('roomiFriendStateV10') ||
+    localStorage.getItem('roomiFriendStateV9');
   state=saved?JSON.parse(saved):clone(defaults);
 }catch{state=clone(defaults)}
 state = state && typeof state==='object' ? state : clone(defaults);
@@ -52,9 +52,9 @@ function remember(charId,text){
 }
 const save=()=>{
   const payload=JSON.stringify(state);
-  localStorage.setItem('roomiStateV18',payload);
-  localStorage.setItem('roomiStateV17',payload);
-  localStorage.setItem('roomiStateV16',payload);
+  localStorage.setItem('roomiFriendStateV18',payload);
+  localStorage.setItem('roomiFriendStateV17',payload);
+  localStorage.setItem('roomiFriendStateV16',payload);
 };
 const esc=(s='')=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const getChar=id=>state.chars.find(c=>c.id===id);
