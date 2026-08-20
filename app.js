@@ -508,19 +508,67 @@ function updateFriendWeatherPreview(){
  el.textContent=`${country} · ${city} · 현지 ${local} · 실제 날씨 자동 반영`;
 }
 $('#avatarInput').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{avatarData=r.result;$('#avatarPreview').src=avatarData;$('#avatarPreview').style.display='block';$('#avatarPlaceholder').style.display='none'};r.readAsDataURL(f)};
+function saveFriend(){
+  const name=$('#nameInput').value.trim();
+  const handle=$('#handleInput').value.trim().replace(/^@/,'');
+
+  if(!name || !handle){
+    alert('이름과 아이디를 모두 입력해 주세요.');
+    return;
+  }
+
+  const editingId=$('#editingId').value;
+
+  if(editingId){
+    const c=getChar(editingId);
+    if(!c)return;
+
+    Object.assign(c,{
+      name,
+      handle,
+      country:$('#friendCountry').value,
+      loc:$('#friendLocation').value,
+      speech:$('#speechInput').value.trim()||'자연스럽게 말함',
+      bio:$('#personalityInput').value.trim()||'설정된 성격 설명이 없습니다.',
+      avatar:avatarData,
+      status:$('#statusInput').value.trim()||'온라인'
+    });
+  }else{
+    const id=handle+'_'+Date.now();
+
+    state.chars.push({
+      id,
+      name,
+      handle,
+      country:$('#friendCountry').value,
+      loc:$('#friendLocation').value,
+      speech:$('#speechInput').value.trim()||'자연스럽게 말함',
+      bio:$('#personalityInput').value.trim()||'설정된 성격 설명이 없습니다.',
+      avatar:avatarData,
+      status:$('#statusInput').value.trim()||'온라인'
+    });
+
+    state.chats[id]=[];
+    state.memories[id]=[];
+  }
+
+  save();
+  renderFriends();
+  renderChats();
+  renderFeed();
+  $('#friendDialog').close();
+  resetFriendForm();
+}
+
 $('#friendForm').addEventListener('submit',e=>{
- if(e.submitter?.value==='cancel')return;
- e.preventDefault();
- const name=$('#nameInput').value.trim(),handle=$('#handleInput').value.trim().replace(/^@/,''); if(!name||!handle)return;
- const editingId=$('#editingId').value;
- if(editingId){
-   const c=getChar(editingId); if(!c)return;
-   Object.assign(c,{name,handle,country:$('#friendCountry').value,loc:$('#friendLocation').value,speech:$('#speechInput').value.trim()||'자연스럽게 말함',bio:$('#personalityInput').value.trim()||'설정된 성격 설명이 없습니다.',avatar:avatarData,status:$('#statusInput').value.trim()||'온라인'});
- }else{
-   const id=handle+'_'+Date.now(); state.chars.push({id,name,handle,country:$('#friendCountry').value,loc:$('#friendLocation').value,speech:$('#speechInput').value.trim()||'자연스럽게 말함',bio:$('#personalityInput').value.trim()||'설정된 성격 설명이 없습니다.',avatar:avatarData,status:$('#statusInput').value.trim()||'온라인'}); state.chats[id]=[]; state.memories[id]=[];
- }
- save(); renderFriends(); renderChats(); renderFeed(); $('#friendDialog').close(); resetFriendForm();
+  e.preventDefault();
+  saveFriend();
 });
+
+$('#saveFriendBtn').onclick=e=>{
+  e.preventDefault();
+  saveFriend();
+};
 $('#deleteFriendBtn').onclick=()=>{
  const id=$('#editingId').value, c=getChar(id); if(!c)return;
  if(!confirm(`${c.name}을(를) 삭제할까요?\n이 캐릭터의 게시물·댓글·DM·기억도 함께 삭제됩니다.`))return;
