@@ -368,24 +368,25 @@
       const c =
         pick(state.chars);
 
-      const post =
-        await autoPost(c);
+     const post =
+  await autoPost(c);
 
-      if (
-        Math.random() < 0.85
-      ) {
-        await socialReaction(
-          post
-        );
-      }
+if (post) {
+  if (
+    Math.random() < 0.85
+  ) {
+    await socialReaction(
+      post
+    );
+  }
 
-      if (!silent) {
-        toast(
-          c.name +
-          "이 새 글을 올렸어요"
-        );
-      }
-
+  if (!silent) {
+    toast(
+      c.name +
+      "이 새 글을 올렸어요"
+    );
+  }
+}
     } else {
       const candidates =
         recent.filter(
