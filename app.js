@@ -52,9 +52,20 @@ function remember(charId,text){
 }
 const save=()=>{
   const payload=JSON.stringify(state);
+
+  [
+    'roomiFriendStateV17',
+    'roomiFriendStateV16',
+    'roomiFriendStateV15',
+    'roomiFriendStateV14',
+    'roomiFriendStateV13',
+    'roomiFriendStateV12',
+    'roomiFriendStateV11',
+    'roomiFriendStateV10',
+    'roomiFriendStateV9'
+  ].forEach(key=>localStorage.removeItem(key));
+
   localStorage.setItem('roomiFriendStateV18',payload);
-  localStorage.setItem('roomiFriendStateV17',payload);
-  localStorage.setItem('roomiFriendStateV16',payload);
 };
 const esc=(s='')=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const getChar=id=>state.chars.find(c=>c.id===id);
