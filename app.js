@@ -552,12 +552,27 @@ function saveFriend(){
     state.memories[id]=[];
   }
 
+  try{
   save();
+
   renderFriends();
   renderChats();
   renderFeed();
+
   $('#friendDialog').close();
   resetFriendForm();
+
+  alert('캐릭터가 저장됐어요.');
+}catch(err){
+  console.error('캐릭터 저장 실패:',err);
+
+  alert(
+    '캐릭터 저장에 실패했어요.\n' +
+    (err?.name || '') +
+    '\n' +
+    (err?.message || '')
+  );
+}
 }
 
 $('#friendForm').addEventListener('submit',e=>{
