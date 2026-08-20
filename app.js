@@ -149,7 +149,11 @@ function lightweightReply(c,userText,context={}){
    const quoted=String(tc.text||'');
    if(intent==='statement' && raw.length<=30){
      if(/일하|근무|출근/.test(raw)) return F('아, 지금 일하고 계시는군요. 많이 바쁘십니까?','아, 지금 일하는 중이구나. 많이 바빠?');
-     if(/먹|밥|식사/.test(raw)) return F('아, 지금 드시는 중이군요. 무엇을 드십니까?','아, 지금 먹는 중이구나. 뭐 먹어?');
+     if(/먹고\s*있|먹는\s*중|밥\s*먹는\s*중|식사\s*중/.test(raw))
+  return F(
+    '아, 지금 드시는 중이군요. 무엇을 드십니까?',
+    '아, 지금 먹는 중이구나. 뭐 먹어?'
+  );
      if(/집|퇴근|들어왔/.test(raw)) return F('아, 지금은 집에 계시는군요. 오늘 고생 많으셨습니다.','아, 지금 집이구나. 오늘 고생했네.');
    }
    if(intent==='challenge_laugh')return F(`아, 제가 방금 "${quoted}"라고 한 걸 말씀하시는군요. 그 표현이 웃겼다는 뜻으로 쓴 건데, 이상하게 들렸다면 제가 말을 잘못했습니다.`,`아, 내가 방금 "${quoted}"라고 한 거 말하는 거지. 그 표현이 좀 웃겼다는 뜻이었는데 이상하게 들렸으면 내가 말을 잘못했네.`);
