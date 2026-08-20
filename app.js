@@ -495,6 +495,7 @@ function openFriendEditor(id=null){
  $('#friendDialog').showModal();
 }
 $('#addFriendBtn').onclick=()=>openFriendEditor();
+$('#cancelFriendBtn').onclick=()=>$('#friendDialog').close();
 $('#friendCountry').onchange=()=>{fillFriendCities($('#friendCountry').value);updateFriendWeatherPreview();};
 $('#friendLocation').onchange=()=>updateFriendWeatherPreview();
 function updateFriendWeatherPreview(){
