@@ -518,7 +518,62 @@ function updateFriendWeatherPreview(){
  try{local=new Intl.DateTimeFormat('ko-KR',{timeZone:p.tz,weekday:'short',hour:'2-digit',minute:'2-digit'}).format(new Date())}catch{}
  el.textContent=`${country} · ${city} · 현지 ${local} · 실제 날씨 자동 반영`;
 }
-$('#avatarInput').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{avatarData=r.result;$('#avatarPreview').src=avatarData;$('#avatarPreview').style.display='block';$('#avatarPlaceholder').style.display='none'};r.readAsDataURL(f)};
+$('#avatarInput').onchange=e=>{
+  const f=e.target.files[0];
+  if(!f)return;
+
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+    const img=new Image();
+
+    img.onload=()=>{
+      try{
+        const size=320;
+
+        const canvas=document.createElement('canvas');
+        canvas.width=size;
+        canvas.height=size;
+
+        const ctx=canvas.getContext('2d');
+
+        const scale=Math.max(
+          size/img.width,
+          size/img.height
+        );
+
+        const w=img.width*scale;
+        const h=img.height*scale;
+
+        ctx.drawImage(
+          img,
+          (size-w)/2,
+          (size-h)/2,
+          w,
+          h
+        );
+
+        avatarData=canvas.toDataURL('image/jpeg',0.72);
+
+        $('#avatarPreview').src=avatarData;
+        $('#avatarPreview').style.display='block';
+        $('#avatarPlaceholder').style.display='none';
+
+      }catch(err){
+        console.error(err);
+        alert('사진 처리에 실패했어요.');
+      }
+    };
+
+    img.onerror=()=>{
+      alert('사진을 불러오지 못했어요.');
+    };
+
+    img.src=reader.result;
+  };
+
+  reader.readAsDataURL(f);
+};
 function saveFriend(){
   const name=$('#nameInput').value.trim();
   const handle=$('#handleInput').value.trim().replace(/^@/,'');
